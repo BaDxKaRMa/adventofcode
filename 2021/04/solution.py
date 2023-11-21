@@ -3,13 +3,15 @@
 # https://adventofcode.com/2021
 # day 04
 
-import sys
 from loguru import logger
+import sys
 
 logger.remove()
 logger.add(sys.stderr, level="INFO")
 
-from functools import partial, reduce
+from functools import reduce
+
+print("hello")
 
 
 def draw_num(boards, draws, idx=0):
