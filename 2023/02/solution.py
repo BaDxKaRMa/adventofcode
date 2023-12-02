@@ -9,7 +9,7 @@ import unittest
 from loguru import logger
 
 logger.remove()
-logger.add(sys.stderr, level="DEBUG")
+logger.add(sys.stderr, level="INFO")
 
 
 class TestParts(unittest.TestCase):
@@ -71,6 +71,13 @@ def parse_input(lines):
 
 
 def part1(data):
+    """
+    Which games would have been possible if the bag contained only 12 red cubes,
+    13 green cubes, and 14 blue cubes?
+
+    Set the valid counts for each color. Iterate through each game and pull.
+    Sum the games that are valid.
+    """
     valid_games = []
     valid_counts = {"red": 12, "green": 13, "blue": 14}
     logger.info(f"Valid Counts set to: {valid_counts}")
@@ -91,12 +98,19 @@ def part1(data):
         sum_of_games += int(game.split(" ")[1])
         logger.debug(f"Adding game {game.split(' ')[1]} to sum_of_games")
 
-    logger.info(f"Sum of games: {sum_of_games}")
+    logger.success(f"Sum of valid games: {sum_of_games}")
 
     return sum_of_games
 
 
 def part2(data):
+    """
+    In each game you played, what is the fewest number of cubes of each color
+    that could have been in the bag to make the game possible?
+
+    Find the max count of each color in each game. Multiple the max counts
+    and sum the list.
+    """
     max_counts = {"red": 0, "green": 0, "blue": 0}
     max_per_game = {}
 
@@ -115,6 +129,7 @@ def part2(data):
         sum_of_games += max_counts["red"] * max_counts["green"] * max_counts["blue"]
         logger.debug(f"Adding game {game_name} to total: {sum_of_games}")
 
+    logger.success(f"In {len(data)} games, the sum of max counts is {sum_of_games}")
     return sum_of_games
 
 

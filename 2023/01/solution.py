@@ -54,7 +54,6 @@ def part1(data):
             first_digit = digits[0]
             last_digit = digits[-1]
             logger.debug(f"First digit: {first_digit}, Last digit: {last_digit}")
-            # combine first and last into a double digit number
             list_of_digits.append(int(first_digit + last_digit))
             logger.debug(f"Combined digits: {digits}")
 
