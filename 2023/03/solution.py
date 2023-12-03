@@ -42,7 +42,7 @@ def parse_input(lines):
 
 def part1(data: List[str]) -> int:
     # Define the set of symbols
-    SYMBOLS: Set[str] = {"/", "+", "#", "$", "-", "&", "%", "=", "@", "*"}
+    SYMBOLS: Set[str] = {"+", "#", "$", "*"}
 
     # Get the height and length of the schematic
     schema_height: int = len(data) - 1
