@@ -12,6 +12,27 @@ advent-cli = "^0.2.2"
 loguru = "^0.7.0"
 numpy = "^1.25.0"
 
+[tool.isort]
+profile = "black"
+
+[tool.black]
+target-version = ['py39', 'py310', 'py311']
+include = '\.pyi?$'
+line-length = 88
+exclude = '''
+/(
+    \.git
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+)/
+'''
+
 
 [build-system]
 requires = ["poetry-core"]
