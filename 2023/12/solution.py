@@ -53,32 +53,32 @@ def parse_input(lines):
 
 
 @lru_cache
-def recursive_arrangements(pixels: str, groups: Tuple[int]):
-    if len(pixels) == 0:
-        return 1 if len(groups) == 0 else 0
-    if pixels.startswith("."):
-        return recursive_arrangements(pixels.strip("."), groups)
-    if pixels.startswith("?"):
+def recursive_arrangements(springs: str, counts: Tuple[int, ...]) -> int:
+    if len(springs) == 0:
+        return 1 if len(counts) == 0 else 0
+    if springs.startswith("."):
+        return recursive_arrangements(springs.strip("."), counts)
+    if springs.startswith("?"):
         return recursive_arrangements(
-            pixels.replace("?", ".", 1), groups
-        ) + recursive_arrangements(pixels.replace("?", "#", 1), groups)
-    if pixels.startswith("#"):
-        if len(groups) == 0:
+            springs.replace("?", ".", 1), counts
+        ) + recursive_arrangements(springs.replace("?", "#", 1), counts)
+    if springs.startswith("#"):
+        if len(counts) == 0:
             return 0
-        if len(pixels) < groups[0]:
+        if len(springs) < counts[0]:
             return 0
-        if any(c == "." for c in pixels[0 : groups[0]]):
+        if any(c == "." for c in springs[0 : counts[0]]):
             return 0
-        if len(groups) > 1:
-            if len(pixels) < groups[0] + 1 or pixels[groups[0]] == "#":
+        if len(counts) > 1:
+            if len(springs) < counts[0] + 1 or springs[counts[0]] == "#":
                 return 0
-            return recursive_arrangements(pixels[groups[0] + 1 :], tuple(groups[1:]))
+            return recursive_arrangements(springs[counts[0] + 1 :], tuple(counts[1:]))
         else:
-            return recursive_arrangements(pixels[groups[0] :], tuple(groups[1:]))
+            return recursive_arrangements(springs[counts[0] :], tuple(counts[1:]))
     raise Exception("no other branches possible")
 
 
-def part1(records, damaged_springs):
+def part1(records, damaged_springs) -> int:
     total = 0
     for record, counts in zip(records, damaged_springs):
         counts = tuple(counts)
@@ -86,7 +86,7 @@ def part1(records, damaged_springs):
     return total
 
 
-def part2(records, damaged_springs):
+def part2(records, damaged_springs) -> int:
     total = 0
     for record, counts in zip(records, damaged_springs):
         counts = tuple(counts)
