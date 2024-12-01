@@ -2,50 +2,45 @@
 import argparse
 import sys
 
-
 try:
     from loguru import logger
 except ImportError:
-    print("Please pip install loguru")
+    print("Please install the 'loguru' package by running 'pip install loguru'")
     sys.exit(1)
 
 
-def parse_args():
+def parse_args() -> argparse.Namespace:
     """
-    Parses debug and folder arguments.
+    Parses debug and test arguments.
 
-    Variables:
-    debug (bool): If True, debug logging will be enabled. Default = False
-
-    Returns: (argparse.Namespace): Parsed arguments.
+    Returns:
+        argparse.Namespace: Parsed arguments.
     """
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description="Parse command line arguments.")
     parser.add_argument(
         "--debug",
         action="store_true",
         default=False,
-        required=False,
         help="Enable debug logging",
     )
     parser.add_argument(
         "--test",
         action="store_true",
         default=False,
-        required=False,
         help="Run tests",
     )
     return parser.parse_args()
 
 
-def setup_logging(log_level: str = "INFO"):
+def setup_logging(log_level: str = "INFO") -> logger:
     """
     Setup loguru logging.
 
-    Variables:
-    log_level (str): The log level to be set. Default = "INFO"
+    Args:
+        log_level (str): The log level to be set. Default = "INFO"
 
     Returns:
-    logger (loguru.logger): Loguru logger object.
+        logger: Loguru logger object.
     """
     # Define valid log levels
     valid_log_levels = [
@@ -64,7 +59,7 @@ def setup_logging(log_level: str = "INFO"):
             f"Invalid log level: {log_level}. Valid log levels are: {', '.join(valid_log_levels)}"
         )
 
-    # Remove all built in handlers
+    # Remove all built-in handlers
     logger.remove()
     # Set custom loguru format
     fmt = (
@@ -73,8 +68,15 @@ def setup_logging(log_level: str = "INFO"):
     )
     # Set the log level
     logger.add(sys.stderr, format=fmt, level=log_level.upper())
+
+    # Test logging
+    logger.debug("Logging setup complete with level: {}", log_level.upper())
+
     return logger
 
 
 if __name__ == "__main__":
-    pass
+    args = parse_args()
+    logger = setup_logging("DEBUG" if args.debug else "INFO")
+    if args.test:
+        logger.info("Running tests...")
