@@ -5,7 +5,7 @@
 from my_utils import setup_logging
 from collections import Counter
 
-logger = setup_logging(debug=False)
+logger = setup_logging(log_level="INFO")
 
 
 def parse_input(lines):

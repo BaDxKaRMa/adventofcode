@@ -37,16 +37,33 @@ def parse_args():
     return parser.parse_args()
 
 
-def setup_logging(debug: bool):
+def setup_logging(log_level: str = "INFO"):
     """
     Setup loguru logging.
 
     Variables:
-    debug (bool): If True, debug logging will be enabled. Default = False
+    log_level (str): The log level to be set. Default = "INFO"
 
     Returns:
     logger (loguru.logger): Loguru logger object.
     """
+    # Define valid log levels
+    valid_log_levels = [
+        "TRACE",
+        "DEBUG",
+        "INFO",
+        "SUCCESS",
+        "WARNING",
+        "ERROR",
+        "CRITICAL",
+    ]
+
+    # Validate the log level
+    if log_level.upper() not in valid_log_levels:
+        raise ValueError(
+            f"Invalid log level: {log_level}. Valid log levels are: {', '.join(valid_log_levels)}"
+        )
+
     # Remove all built in handlers
     logger.remove()
     # Set custom loguru format
@@ -54,11 +71,8 @@ def setup_logging(debug: bool):
         "<level>{time:YYYY-MM-DD hh:mm:ss A}</level> | <level>{level: <8}</level> | <cyan>{name}</cyan>:<cyan>{"
         "function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level> "
     )
-    # Set Debug level if --debug is passed
-    if debug:
-        logger.add(sys.stderr, format=fmt, level="DEBUG")
-    else:
-        logger.add(sys.stderr, format=fmt, level="INFO")
+    # Set the log level
+    logger.add(sys.stderr, format=fmt, level=log_level.upper())
     return logger
 
 
