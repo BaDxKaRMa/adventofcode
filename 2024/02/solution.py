@@ -26,7 +26,8 @@ def parse_input(lines: List[str]) -> List[List[int]]:
 
 def is_safe(report: List[int]) -> bool:
     """
-    Determines if a report is safe.
+    Determines if a report is safe by checking if the levels are either strictly increasing or strictly decreasing,
+    with differences between consecutive levels ranging from 1 to 3.
 
     Args:
         report (list of int): A list of levels in the report.
@@ -42,12 +43,16 @@ def is_safe(report: List[int]) -> bool:
         report[i] > report[i + 1] and 1 <= report[i] - report[i + 1] <= 3
         for i in range(len(report) - 1)
     )
+    logger.debug(
+        f"Report: {report}, increasing: {increasing}, decreasing: {decreasing}"
+    )
     return increasing or decreasing
 
 
 def is_safe_with_dampener(report: List[int]) -> bool:
     """
-    Determines if a report is safe with the Problem Dampener.
+    Determines if a report is safe with the Problem Dampener by checking if the report
+    itself is safe or if it becomes safe by removing one level.
 
     Args:
         report (list of int): A list of levels in the report.
@@ -56,13 +61,17 @@ def is_safe_with_dampener(report: List[int]) -> bool:
         bool: True if the report is safe, False otherwise.
     """
     if is_safe(report):
+        logger.debug(f"Report: {report} is safe without dampener")
         return True
 
     for i in range(len(report)):
         modified_report = report[:i] + report[i + 1 :]
         if is_safe(modified_report):
+            logger.debug(
+                f"Report: {report} is safe with dampener by removing level {report[i]}"
+            )
             return True
-
+    logger.debug(f"Report: {report} is not safe with dampener")
     return False
 
 
