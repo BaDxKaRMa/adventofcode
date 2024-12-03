@@ -7,7 +7,7 @@ from typing import List
 from my_utils import setup_logging
 import re
 
-logger = setup_logging(log_level="DEBUG")
+logger = setup_logging(log_level="INFO")
 
 
 def parse_input(lines: List[str]) -> List[str]:
